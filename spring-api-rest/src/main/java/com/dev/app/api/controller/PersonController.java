@@ -97,4 +97,13 @@ public class PersonController {
 		personaService.delete(id);
 		return ResponseEntity.ok().build();
 	}
+	
+	@ApiOperation(value = "Disabled A Specific Person by your ID")
+	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH,
+					produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/x-yaml" })
+	public PersonVO disabledPerson(@PathVariable(value = "id") Long id) {
+		PersonVO personVO = personaService.disabledPerson(id);
+		personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		return personVO;
+	}
 }

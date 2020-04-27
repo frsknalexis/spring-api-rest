@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dev.app.api.controller.exception.ResourceNotFoundException;
 import com.dev.app.api.converter.DozerConverter;
@@ -66,5 +67,14 @@ public class PersonaServiceImpl implements PersonaService {
 		Person entity = personRepository.findById(id)
 								.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
 		personRepository.delete(entity);
+	}
+
+	@Transactional
+	@Override
+	public PersonVO disabledPerson(Long id) {
+		personRepository.disabledPerson(id);
+		Person entity = personRepository.findById(id)
+								.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 }

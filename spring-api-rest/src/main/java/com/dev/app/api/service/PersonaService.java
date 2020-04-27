@@ -18,4 +18,6 @@ public interface PersonaService {
 	PersonVO update(PersonVO person);
 	
 	void delete(Long id);
+	
+	PersonVO disabledPerson(Long id);
 }
