@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,18 @@ public class PersonaServiceImpl implements PersonaService {
 		return DozerConverter.parseListObject(entityPersonList, PersonVO.class);
 	}
 
+	@Override
+	public Page<PersonVO> findAll(Pageable pageable) {
+		Page<Person> entityList = personRepository.findAll(pageable);
+		return entityList.map((p) -> DozerConverter.parseObject(p, PersonVO.class));
+	}
+	
+	@Override
+	public Page<PersonVO> findPersonByName(String firstName, Pageable pageable) {
+		Page<Person> entityList = personRepository.findPersonByName(firstName, pageable);
+		return entityList.map((p) -> DozerConverter.parseObject(p, PersonVO.class));
+	}
+	
 	@Override
 	public PersonVO findById(Long id) {
 		Person entityPerson = personRepository.findById(id)

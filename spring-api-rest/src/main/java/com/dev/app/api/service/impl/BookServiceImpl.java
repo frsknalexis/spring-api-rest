@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dev.app.api.controller.exception.ResourceNotFoundException;
@@ -31,6 +33,12 @@ public class BookServiceImpl implements BookService {
 	public List<BookVO> findAll() {
 		List<Book> entityBookList = bookRepository.findAll();
 		return DozerConverter.parseListObject(entityBookList, BookVO.class);
+	}
+	
+	@Override
+	public Page<BookVO> findAll(Pageable pageable) {
+		Page<Book> entityList = bookRepository.findAll(pageable);
+		return entityList.map((b) -> DozerConverter.parseObject(b, BookVO.class));
 	}
 
 	@Override
